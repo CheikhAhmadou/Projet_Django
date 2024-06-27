@@ -1,12 +1,136 @@
-{% extends 'partials/base.html' %}
-{% block title %}Home Page{% endblock %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Les Établissements Scolaires</title>
+    
+    <!-- Inclure Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Inclure FontAwesome pour des icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    
+    <!-- Inclure les CSS de Folium -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        #mapid {
+            height: 600px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard-index' %}" target="_blank">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-{% block content %}
-<div class="container">
-    <div class="row mt-4">
-        <div class="col-md-10 offset-md-1">
-            {{ map1|safe }}
+    <!-- Contenu principal -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 my-4">
+                <h1 class="text-center">Carte des Écoles</h1>
+                <div id="mapid">
+                    {{ map1|safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Accueil -->
+        <div id="section-accueil" class="row hidden">
+            <div class="col-lg-12 mb-4">
+                <h2>Page d'Accueil (Accueil)</h2>
+                <h3>Bienvenue:</h3>
+                <p>"Bienvenue sur l'application des Établissements Scolaires du Sénégal, votre portail complet pour découvrir, explorer et interagir avec les écoles à travers tout le pays."</p>
+                <h3>Informations générales:</h3>
+                <p>"Notre application vise à faciliter l'accès à des informations précieuses sur les établissements scolaires sénégalais, promouvant ainsi une éducation de qualité et transparente pour tous."</p>
+                <h3>Actualités:</h3>
+                <p>"Découvrez les dernières actualités sur les écoles, les événements à venir et les développements importants dans le secteur éducatif du Sénégal."</p>
+            </div>
+        </div>
+
+        <!-- Section d'informations supplémentaires -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Informations sur les Écoles</h5>
+                        <p class="card-text">Ajoutez ici des informations complémentaires sur les écoles, des statistiques, des détails, etc.</p>
+                        <a href="#" class="btn btn-primary">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Ressources</h5>
+                        <p class="card-text">Ajoutez ici des liens vers des ressources utiles, des articles, des documents, etc.</p>
+                        <a href="#" class="btn btn-primary">Découvrir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Contact</h5>
+                        <p class="card-text">Ajoutez ici des informations de contact, des formulaires, etc.</p>
+                        <a href="#" class="btn btn-primary">Contactez-nous</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    
+    <!-- Footer -->
+    <footer class="py-4 bg-primary text-white-50">
+        <div class="container text-center">
+            <small>&copy; 2024 Votre Entreprise. Tous droits réservés.</small>
+        </div>
+    </footer>
+
+    <!-- Inclure les scripts JS de Bootstrap et Folium -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Inclure les scripts JS de Folium -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.fullscreen/Control.FullScreen.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <script>
+        function showAccueil() {
+            // Affiche la section Accueil en retirant la classe 'hidden'
+            document.getElementById('section-accueil').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
